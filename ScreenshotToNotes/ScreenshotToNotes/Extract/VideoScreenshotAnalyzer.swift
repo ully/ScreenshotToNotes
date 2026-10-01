@@ -27,20 +27,34 @@ class VideoScreenshotAnalyzer {
         let patterns: [String]
         
         switch source {
+        // 国内平台
         case .douyin:
-            patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "作者[：:]([\
-
-\\u4e00-\\u9fa5]+)"]
+            patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "作者[：:]([\\w\\u4e00-\\u9fa5]+)"]
         case .kuaishou:
             patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "快手号[：:]([\\w]+)"]
         case .bilibili:
-            patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "UP主[：:]([\
-
-\\u4e00-\\u9fa5]+)"]
+            patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "UP主[：:]([\\w\\u4e00-\\u9fa5]+)"]
         case .xiaohongshu:
             patterns = ["@([\\w\\u4e00-\\u9fa5]+)", "小红书号[：:]([\\w]+)"]
+        
+        // 国际平台
+        case .youtube:
+            patterns = ["@([\\w\\-]+)", "by ([\\w\\s]+)", "Channel: ([\\w\\s]+)"]
+        case .tiktok:
+            patterns = ["@([\\w\\.]+)", "Creator: @([\\w\\.]+)"]
+        case .instagram:
+            patterns = ["@([\\w\\.]+)", "Posted by @([\\w\\.]+)"]
+        case .facebook:
+            patterns = ["@([\\w\\.]+)", "Posted by ([\\w\\s]+)"]
+        case .twitch:
+            patterns = ["@([\\w\\-]+)", "([\\w\\-]+) is streaming"]
+        case .vimeo:
+            patterns = ["by ([\\w\\s]+)", "from ([\\w\\s]+)"]
+        case .reddit:
+            patterns = ["u/([\\w\\-]+)", "Posted by u/([\\w\\-]+)"]
+        
         default:
-            patterns = ["@([\\w\\u4e00-\\u9fa5]+)"]
+            patterns = ["@([\\w\\u4e00-\\u9fa5\\.\\-]+)"]
         }
         
         for pattern in patterns {
@@ -70,12 +84,57 @@ class VideoScreenshotAnalyzer {
     private func extractVideoStats(from text: String, source: SourceGuess) -> ExtractedContent.VideoStats {
         var stats = ExtractedContent.VideoStats()
         
-        let patterns: [(key: String, patterns: [String])] = [
-            ("likes", ["(\\d+\\.?\\d*[万wkK]?)\\s*赞", "点赞\\s*(\\d+\\.?\\d*[万wkK]?)", "(\\d+\\.?\\d*[万wkK]?)\\s*👍"]),
-            ("comments", ["(\\d+\\.?\\d*[万wkK]?)\\s*评论", "评论\\s*(\\d+\\.?\\d*[万wkK]?)", "(\\d+\\.?\\d*[万wkK]?)\\s*💬"]),
-            ("shares", ["(\\d+\\.?\\d*[万wkK]?)\\s*转发", "分享\\s*(\\d+\\.?\\d*[万wkK]?)", "(\\d+\\.?\\d*[万wkK]?)\\s*🔗"]),
-            ("views", ["(\\d+\\.?\\d*[万wkK]?)\\s*播放", "观看\\s*(\\d+\\.?\\d*[万wkK]?)", "(\\d+\\.?\\d*[万wkK]?)次"])
-        ]
+        var patterns: [(key: String, patterns: [String])]
+        
+        if source.region == .international {
+            // 国际平台模式（英文）
+            patterns = [
+                ("likes", [
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*[Ll]ikes?",
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*👍",
+                    "👍\\s*(\\d+[.,]?\\d*[KMB]?)"
+                ]),
+                ("comments", [
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*[Cc]omments?",
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*💬",
+                    "💬\\s*(\\d+[.,]?\\d*[KMB]?)"
+                ]),
+                ("shares", [
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*[Ss]hares?",
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*🔗",
+                    "[Ss]hared\\s*(\\d+[.,]?\\d*[KMB]?)"
+                ]),
+                ("views", [
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*[Vv]iews?",
+                    "(\\d+[.,]?\\d*[KMB]?)\\s*watching",
+                    "👁\\s*(\\d+[.,]?\\d*[KMB]?)"
+                ])
+            ]
+        } else {
+            // 中文平台模式
+            patterns = [
+                ("likes", [
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*赞",
+                    "点赞\\s*(\\d+\\.?\\d*[万wkKMB]?)",
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*👍"
+                ]),
+                ("comments", [
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*评论",
+                    "评论\\s*(\\d+\\.?\\d*[万wkKMB]?)",
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*💬"
+                ]),
+                ("shares", [
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*转发",
+                    "分享\\s*(\\d+\\.?\\d*[万wkKMB]?)",
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*🔗"
+                ]),
+                ("views", [
+                    "(\\d+\\.?\\d*[万wkKMB]?)\\s*播放",
+                    "观看\\s*(\\d+\\.?\\d*[万wkKMB]?)",
+                    "(\\d+\\.?\\d*[万wkKMB]?)次"
+                ])
+            ]
+        }
         
         for (key, patternList) in patterns {
             for pattern in patternList {

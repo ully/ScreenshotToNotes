@@ -15,7 +15,7 @@ final class VideoAnalyzerTests: XCTestCase {
         classifier = nil
     }
     
-    // MARK: - 平台识别测试
+    // MARK: - 平台识别测试（国内）
     
     func testClassifyDouyinVideo() throws {
         let text = "@美食博主 教你做麻辣香锅 #美食教程 #做菜 点赞关注"
@@ -44,6 +44,43 @@ final class VideoAnalyzerTests: XCTestCase {
         let result = classifier.classify(text: text)
         
         XCTAssertEqual(result.sourceGuess, .xiaohongshu, "应该识别为小红书")
+    }
+    
+    // MARK: - 平台识别测试（国际）
+    
+    func testClassifyYouTubeVideo() throws {
+        let text = "Subscribe to @TechReviewer youtube.com notification bell"
+        let result = classifier.classify(text: text)
+        
+        XCTAssertEqual(result.sourceGuess, .youtube, "应该识别为YouTube")
+    }
+    
+    func testClassifyTikTokVideo() throws {
+        let text = "@creator.name For You Page #fyp tiktok.com"
+        let result = classifier.classify(text: text)
+        
+        XCTAssertEqual(result.sourceGuess, .tiktok, "应该识别为TikTok")
+    }
+    
+    func testClassifyInstagramReels() throws {
+        let text = "@fashion.blogger instagram Reels #ootd ig"
+        let result = classifier.classify(text: text)
+        
+        XCTAssertEqual(result.sourceGuess, .instagram, "应该识别为Instagram")
+    }
+    
+    func testClassifyTwitchStream() throws {
+        let text = "@streamer is streaming live on twitch.tv 1.2K watching"
+        let result = classifier.classify(text: text)
+        
+        XCTAssertEqual(result.sourceGuess, .twitch, "应该识别为Twitch")
+    }
+    
+    func testClassifyRedditVideo() throws {
+        let text = "Posted by u/username on r/videos reddit.com upvote"
+        let result = classifier.classify(text: text)
+        
+        XCTAssertEqual(result.sourceGuess, .reddit, "应该识别为Reddit")
     }
     
     // MARK: - 视频类型检测测试
@@ -97,9 +134,9 @@ final class VideoAnalyzerTests: XCTestCase {
         XCTAssertNotNil(videoResult.duration, "应该提取到短视频时长")
     }
     
-    // MARK: - 视频数据提取测试
+    // MARK: - 视频数据提取测试（中文）
     
-    func testExtractVideoStats() throws {
+    func testExtractVideoStatsChinese() throws {
         let text = """
         精彩视频
         12.5万 赞
@@ -114,6 +151,51 @@ final class VideoAnalyzerTests: XCTestCase {
         XCTAssertNotNil(videoResult.stats?.comments, "应该提取到评论数")
         XCTAssertNotNil(videoResult.stats?.shares, "应该提取到分享数")
         XCTAssertNotNil(videoResult.stats?.views, "应该提取到播放数")
+    }
+    
+    // MARK: - 视频数据提取测试（英文）
+    
+    func testExtractVideoStatsEnglish() throws {
+        let text = """
+        Amazing video
+        125K Likes
+        8.8K Comments
+        32K Shares
+        2.8M Views
+        """
+        let videoResult = analyzer.analyzeVideoScreenshot(text: text, sourceGuess: .youtube)
+        
+        XCTAssertNotNil(videoResult.stats, "应该提取到视频数据")
+        XCTAssertNotNil(videoResult.stats?.likes, "应该提取到点赞数")
+        XCTAssertNotNil(videoResult.stats?.comments, "应该提取到评论数")
+        XCTAssertNotNil(videoResult.stats?.shares, "应该提取到分享数")
+        XCTAssertNotNil(videoResult.stats?.views, "应该提取到播放数")
+    }
+    
+    // MARK: - 作者提取测试（国际平台）
+    
+    func testExtractAuthorFromYouTube() throws {
+        let text = "@TechChannel Subscribe for more tech reviews"
+        let videoResult = analyzer.analyzeVideoScreenshot(text: text, sourceGuess: .youtube)
+        
+        XCTAssertNotNil(videoResult.author, "应该提取到YouTube频道")
+        XCTAssertEqual(videoResult.author, "TechChannel")
+    }
+    
+    func testExtractAuthorFromTikTok() throws {
+        let text = "@creator.official New video on TikTok"
+        let videoResult = analyzer.analyzeVideoScreenshot(text: text, sourceGuess: .tiktok)
+        
+        XCTAssertNotNil(videoResult.author, "应该提取到TikTok创作者")
+        XCTAssertTrue(videoResult.author?.contains("creator") ?? false)
+    }
+    
+    func testExtractAuthorFromReddit() throws {
+        let text = "Posted by u/cooluser on r/videos"
+        let videoResult = analyzer.analyzeVideoScreenshot(text: text, sourceGuess: .reddit)
+        
+        XCTAssertNotNil(videoResult.author, "应该提取到Reddit用户")
+        XCTAssertEqual(videoResult.author, "cooluser")
     }
     
     // MARK: - 话题标签提取测试

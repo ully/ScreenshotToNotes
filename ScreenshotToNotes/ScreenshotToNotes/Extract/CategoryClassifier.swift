@@ -48,12 +48,24 @@ class CategoryClassifier: CategoryClassifierProtocol {
     
     private func guessSource(from text: String) -> SourceGuess {
         let indicators: [(SourceGuess, [String])] = [
+            // 国内视频平台
             (.douyin, ["抖音", "douyin", "点赞关注", "抖音号", "直播间", "dou+"]),
             (.kuaishou, ["快手", "kuaishou", "快手号", "快影", "老铁"]),
             (.bilibili, ["哔哩哔哩", "bilibili", "b站", "up主", "投币", "一键三连", "bv"]),
             (.xiaohongshu, ["小红书", "redbook", "种草", "笔记本", "薯条", "小红薯"]),
             (.xigua, ["西瓜视频", "xigua", "今日头条"]),
-            (.twitter, ["twitter", "tweet", "retweet", "@", "转推"]),
+            
+            // 国际视频平台
+            (.youtube, ["youtube", "yt", "subscribe", "notification bell", "youtube.com", "youtu.be"]),
+            (.tiktok, ["tiktok", "for you", "following", "fyp", "tiktok.com"]),
+            (.instagram, ["instagram", "insta", "ig", "reels", "igtv", "instagram.com"]),
+            (.facebook, ["facebook", "fb", "watch", "facebook.com", "fb.com"]),
+            (.twitch, ["twitch", "stream", "live", "chat", "emotes", "twitch.tv"]),
+            (.vimeo, ["vimeo", "vimeo.com", "staff picks"]),
+            (.reddit, ["reddit", "r/", "u/", "upvote", "crosspost", "reddit.com"]),
+            
+            // 其他
+            (.twitter, ["twitter", "tweet", "retweet", "twitter.com", "x.com"]),
             (.wechat, ["微信", "wechat", "公众号", "阅读原文", "点击查看"]),
             (.chat, ["聊天记录", "微信", "qq", "telegram", "whatsapp"]),
             (.web, ["http://", "https://", "www.", ".com", ".cn"])

@@ -6,15 +6,27 @@ ScreenshotToNotes 现在支持智能识别和归档视频平台截图，特别�
 
 ## 支持的平台
 
-### ✅ 完全支持
+### ✅ 国内平台
 
 | 平台 | 识别能力 | 提取信息 |
 |-----|---------|---------|
-| 抖音 | ✅ | 作者、时长、点赞数、评论数、话题标签 |
-| 快手 | ✅ | 作者、时长、互动数据 |
-| 哔哩哔哩 | ✅ | UP主、时长、投币/点赞数据 |
-| 小红书 | ✅ | 作者、话题标签、互动数据 |
-| 西瓜视频 | ✅ | 基础信息提取 |
+| 🎵 抖音 | ✅ | 作者、时长、点赞数、评论数、话题标签 |
+| 📹 快手 | ✅ | 作者、时长、互动数据 |
+| 📺 哔哩哔哩 | ✅ | UP主、时长、投币/点赞数据 |
+| 📖 小红书 | ✅ | 作者、话题标签、互动数据 |
+| 🍉 西瓜视频 | ✅ | 基础信息提取 |
+
+### ✅ 国际平台
+
+| 平台 | 识别能力 | 提取信息 |
+|-----|---------|---------|
+| 🎬 YouTube | ✅ | Channel、Duration、Likes、Comments、Views |
+| 🎵 TikTok | ✅ | Creator、Duration、Likes、Comments、Shares |
+| 📸 Instagram | ✅ | Username、Likes、Comments、Views |
+| 📱 Facebook | ✅ | Author、Engagement data |
+| 🎮 Twitch | ✅ | Streamer、Viewers、Chat |
+| 🎥 Vimeo | ✅ | Creator、Basic stats |
+| 🗣️ Reddit | ✅ | User、Upvotes、Comments |
 
 ## 新增功能
 
@@ -197,6 +209,8 @@ OCR 识别文字
 
 ### 平台识别关键词
 
+**国内平台：**
+
 | 平台 | 关键词 |
 |-----|-------|
 | 抖音 | 抖音、douyin、点赞关注、抖音号、直播间、dou+ |
@@ -204,6 +218,18 @@ OCR 识别文字
 | B站 | 哔哩哔哩、bilibili、b站、up主、投币、一键三连、bv |
 | 小红书 | 小红书、redbook、种草、笔记本、薯条、小红薯 |
 | 西瓜视频 | 西瓜视频、xigua、今日头条 |
+
+**国际平台：**
+
+| 平台 | 关键词 |
+|-----|-------|
+| YouTube | youtube, yt, subscribe, notification bell, youtube.com, youtu.be |
+| TikTok | tiktok, for you, following, fyp, tiktok.com |
+| Instagram | instagram, insta, ig, reels, igtv, instagram.com |
+| Facebook | facebook, fb, watch, facebook.com |
+| Twitch | twitch, stream, live, chat, emotes, twitch.tv |
+| Vimeo | vimeo, vimeo.com, staff picks |
+| Reddit | reddit, r/, u/, upvote, crosspost, reddit.com |
 
 ### 视频类型判断
 

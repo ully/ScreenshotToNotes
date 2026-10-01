@@ -54,11 +54,23 @@ enum NoteCategory: String, CaseIterable, Codable {
 
 // MARK: - 来源类型
 enum SourceGuess: String, Codable {
+    // 国内视频平台
     case douyin = "抖音"
     case kuaishou = "快手"
     case bilibili = "哔哩哔哩"
     case xiaohongshu = "小红书"
     case xigua = "西瓜视频"
+    
+    // 国际视频平台
+    case youtube = "YouTube"
+    case tiktok = "TikTok"
+    case instagram = "Instagram"
+    case facebook = "Facebook"
+    case twitch = "Twitch"
+    case vimeo = "Vimeo"
+    case reddit = "Reddit"
+    
+    // 其他
     case twitter = "Twitter/X"
     case wechat = "微信公众号"
     case chat = "聊天"
@@ -67,12 +79,30 @@ enum SourceGuess: String, Codable {
     
     var isVideoApp: Bool {
         switch self {
-        case .douyin, .kuaishou, .bilibili, .xiaohongshu, .xigua:
+        case .douyin, .kuaishou, .bilibili, .xiaohongshu, .xigua,
+             .youtube, .tiktok, .instagram, .facebook, .twitch, .vimeo, .reddit:
             return true
         default:
             return false
         }
     }
+    
+    var region: VideoRegion {
+        switch self {
+        case .douyin, .kuaishou, .bilibili, .xiaohongshu, .xigua:
+            return .china
+        case .youtube, .tiktok, .instagram, .facebook, .twitch, .vimeo, .reddit:
+            return .international
+        default:
+            return .other
+        }
+    }
+}
+
+enum VideoRegion {
+    case china
+    case international
+    case other
 }
 
 // MARK: - 提取结果

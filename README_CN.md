@@ -299,13 +299,23 @@ xcodebuild test -project ScreenshotToNotes.xcodeproj -scheme ScreenshotToNotes -
 
 ## 视频截图功能 🎬
 
-### 支持平台
+### 支持平台（国内 + 国际）
 
+**国内平台：**
 - ✅ **抖音** - 作者、时长、点赞数、评论数、话题标签
 - ✅ **快手** - 作者、时长、互动数据
 - ✅ **哔哩哔哩** - UP主、时长、投币/点赞数据
 - ✅ **小红书** - 作者、话题标签、互动数据
 - ✅ **西瓜视频** - 基础信息提取
+
+**国际平台：**
+- ✅ **YouTube** - Channel, Duration, Likes, Comments, Views
+- ✅ **TikTok** - Creator, Duration, Engagement stats
+- ✅ **Instagram** - Username, Likes, Comments, Reels
+- ✅ **Facebook** - Author, Engagement data
+- ✅ **Twitch** - Streamer, Viewers, Live chat
+- ✅ **Vimeo** - Creator, Basic stats
+- ✅ **Reddit** - User, Upvotes, Comments
 
 ### 自动提取
 
@@ -317,8 +327,15 @@ xcodebuild test -project ScreenshotToNotes.xcodeproj -scheme ScreenshotToNotes -
 
 ### 示例
 
-**抖音截图：** @美食博主 | 3:25 | 12.5万赞 | #美食教程  
-**自动归档：** 分类为「教程视频」，提取完整信息到备忘录
+**中文平台：**
+- 抖音截图：@美食博主 | 3:25 | 12.5万赞 | #美食教程  
+  → 分类为「教程视频」
+
+**国际平台：**
+- YouTube: @TechReviewer | 15:32 | 125K Likes | #iPhone16  
+  → Auto-classify as "Video Tutorial"
+- TikTok: @creator | 0:45 | 89.2K Likes | #fyp #cooking  
+  → Extract all engagement data
 
 详细说明：[视频截图功能文档](docs/VIDEO_SCREENSHOT_FEATURE.md)
 

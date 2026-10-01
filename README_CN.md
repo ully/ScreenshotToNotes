@@ -4,13 +4,14 @@
 [![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-截图后自动提取文字，智能分类保存到 Apple 备忘录。
+截图后自动提取文字，智能分类保存到 Apple 备忘录。**特别优化视频截图识别**（抖音、快手、B站等）。
 
 ## 功能特性
 
 - ✨ **自动触发**：通过快捷指令自动化，截图后自动处理
 - 🔍 **智能提取**：使用 Vision OCR 识别中英文文字
 - 🏷️ **智能分类**：基于内容自动分类（灵感/方法/待办/单据/联系人/收藏）
+- 🎬 **视频识别**：专门优化抖音、快手、B站、小红书等视频截图（作者、时长、互动数据）
 - ⚡ **轻量筛选**：弹出分类选择框，支持超时自动保存
 - 📝 **结构化保存**：提取标题、摘要、标签、实体信息
 - 📂 **文件夹映射**：自动保存到对应的备忘录文件夹
@@ -120,6 +121,9 @@ App 打开 + OCR 识别
 | 单据 | 订单、发票、收据 | 订单号、支付、金额、发票 | 单据 |
 | 联系人 | 电话、微信、邮箱 | 电话、微信、邮箱、地址 | 联系人 |
 | 收藏 | 商品、产品信息 | 价格、购买、商品、产品 | 收藏 |
+| **视频收藏** 🎬 | **视频内容** | **抖音、快手、B站截图** | **视频收藏** |
+| **教程视频** 🎓 | **教学视频** | **教程、教学、步骤** | **教程视频** |
+| **娱乐视频** ✨ | **娱乐内容** | **搞笑、段子、有趣** | **娱乐视频** |
 | 收件箱 | 低置信度内容 | （默认分类） | 收件箱 |
 
 ### 笔记格式
@@ -293,6 +297,50 @@ xcodebuild test -project ScreenshotToNotes.xcodeproj -scheme ScreenshotToNotes -
 - [ ] 历史记录
 - [ ] 设置修改
 
+## 视频截图功能 🎬
+
+### 支持平台（国内 + 国际）
+
+**国内平台：**
+- ✅ **抖音** - 作者、时长、点赞数、评论数、话题标签
+- ✅ **快手** - 作者、时长、互动数据
+- ✅ **哔哩哔哩** - UP主、时长、投币/点赞数据
+- ✅ **小红书** - 作者、话题标签、互动数据
+- ✅ **西瓜视频** - 基础信息提取
+
+**国际平台：**
+- ✅ **YouTube** - Channel, Duration, Likes, Comments, Views
+- ✅ **TikTok** - Creator, Duration, Engagement stats
+- ✅ **Instagram** - Username, Likes, Comments, Reels
+- ✅ **Facebook** - Author, Engagement data
+- ✅ **Twitch** - Streamer, Viewers, Live chat
+- ✅ **Vimeo** - Creator, Basic stats
+- ✅ **Reddit** - User, Upvotes, Comments
+
+### 自动提取
+
+- 📝 作者/UP主信息
+- ⏱️ 视频时长
+- 💬 点赞、评论、分享数
+- 🏷️ 话题标签（#美食 #教程）
+- 🎯 视频类型（美食/健身/科技/娱乐等）
+
+### 示例
+
+**中文平台：**
+- 抖音截图：@美食博主 | 3:25 | 12.5万赞 | #美食教程  
+  → 分类为「教程视频」
+
+**国际平台：**
+- YouTube: @TechReviewer | 15:32 | 125K Likes | #iPhone16  
+  → Auto-classify as "Video Tutorial"
+- TikTok: @creator | 0:45 | 89.2K Likes | #fyp #cooking  
+  → Extract all engagement data
+
+详细说明：[视频截图功能文档](docs/VIDEO_SCREENSHOT_FEATURE.md)
+
+---
+
 ## 已知限制
 
 ### 系统限制
@@ -320,9 +368,10 @@ xcodebuild test -project ScreenshotToNotes.xcodeproj -scheme ScreenshotToNotes -
    - 手写文字识别率较低
    - 复杂排版可能错乱
 
-3. **来源识别**
-   - 基于关键词匹配
-   - 准确度取决于截图内容
+3. **视频识别**
+   - 依赖界面包含平台标识
+   - 复杂UI布局可能影响提取
+   - 纯图片视频提取有限
 
 ## 故障排查
 

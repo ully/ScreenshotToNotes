@@ -12,6 +12,7 @@ class CaptureManager: ObservableObject {
     
     private let ocrService = OCRService()
     private let classifier = CategoryClassifier()
+    private let videoAnalyzer = VideoScreenshotAnalyzer()
     private let maxRecentRecords = 20
     
     private init() {
@@ -70,6 +71,18 @@ class CaptureManager: ObservableObject {
             
             let imageData = settings.includeImageInNote ? image.jpegData(compressionQuality: 0.8) : nil
             
+            var entities = ocrResult.entities
+            
+            if classification.sourceGuess.isVideoApp {
+                let videoResult = videoAnalyzer.analyzeVideoScreenshot(
+                    text: ocrResult.fullText,
+                    sourceGuess: classification.sourceGuess
+                )
+                entities.videoAuthor = videoResult.author
+                entities.videoDuration = videoResult.duration
+                entities.videoStats = videoResult.stats
+            }
+            
             var content = ExtractedContent(
                 title: ocrResult.title,
                 summary: ocrResult.summary,
@@ -77,7 +90,7 @@ class CaptureManager: ObservableObject {
                 categoryConfidence: classification.confidence,
                 tags: classification.tags,
                 body: ocrResult.fullText,
-                entities: ocrResult.entities,
+                entities: entities,
                 sourceGuess: classification.sourceGuess,
                 screenshotTime: Date(),
                 processedTime: Date(),

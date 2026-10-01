@@ -12,16 +12,31 @@ protocol CategoryClassifierProtocol {
 }
 
 class CategoryClassifier: CategoryClassifierProtocol {
+    private let videoAnalyzer = VideoScreenshotAnalyzer()
+    
     func classify(text: String) -> ClassificationResult {
         let lowercasedText = text.lowercased()
         
         let sourceGuess = guessSource(from: text)
         
-        let category = determineCategory(from: lowercasedText)
+        var category: NoteCategory
+        var confidence: Double
+        var tags: [String]
         
-        let confidence = calculateConfidence(for: category, text: lowercasedText)
-        
-        let tags = extractTags(from: text, category: category)
+        if sourceGuess.isVideoApp {
+            let videoResult = videoAnalyzer.analyzeVideoScreenshot(text: text, sourceGuess: sourceGuess)
+            category = videoResult.videoType.suggestedCategory
+            confidence = 0.85
+            tags = videoResult.topics
+            
+            if tags.isEmpty {
+                tags = extractTags(from: text, category: category)
+            }
+        } else {
+            category = determineCategory(from: lowercasedText)
+            confidence = calculateConfidence(for: category, text: lowercasedText)
+            tags = extractTags(from: text, category: category)
+        }
         
         return ClassificationResult(
             category: category,
@@ -33,10 +48,13 @@ class CategoryClassifier: CategoryClassifierProtocol {
     
     private func guessSource(from text: String) -> SourceGuess {
         let indicators: [(SourceGuess, [String])] = [
-            (.douyin, ["抖音", "douyin", "点赞", "关注", "粉丝", "直播间"]),
+            (.douyin, ["抖音", "douyin", "点赞关注", "抖音号", "直播间", "dou+"]),
+            (.kuaishou, ["快手", "kuaishou", "快手号", "快影", "老铁"]),
+            (.bilibili, ["哔哩哔哩", "bilibili", "b站", "up主", "投币", "一键三连", "bv"]),
+            (.xiaohongshu, ["小红书", "redbook", "种草", "笔记本", "薯条", "小红薯"]),
+            (.xigua, ["西瓜视频", "xigua", "今日头条"]),
             (.twitter, ["twitter", "tweet", "retweet", "@", "转推"]),
             (.wechat, ["微信", "wechat", "公众号", "阅读原文", "点击查看"]),
-            (.xiaohongshu, ["小红书", "redbook", "种草", "笔记", "薯条"]),
             (.chat, ["聊天记录", "微信", "qq", "telegram", "whatsapp"]),
             (.web, ["http://", "https://", "www.", ".com", ".cn"])
         ]
@@ -56,12 +74,15 @@ class CategoryClassifier: CategoryClassifierProtocol {
     
     private func determineCategory(from text: String) -> NoteCategory {
         let categories: [(NoteCategory, [String], Double)] = [
+            (.videoTutorial, ["教程", "教学", "学习", "课程", "步骤", "攻略", "指南"], 2.0),
+            (.videoEntertainment, ["搞笑", "娱乐", "有趣", "笑话", "段子"], 2.0),
             (.task, ["待办", "todo", "任务", "需要", "记得", "提醒", "ddl", "deadline", "完成", "□", "☐"], 2.0),
             (.receipt, ["订单", "支付", "金额", "¥", "$", "元", "发票", "收据", "单号", "快递", "物流"], 2.0),
             (.contact, ["电话", "手机", "微信", "邮箱", "@", "联系", "地址", "qq"], 2.0),
-            (.howto, ["教程", "步骤", "方法", "如何", "怎么", "攻略", "指南", "教学", "技巧"], 1.5),
+            (.howto, ["方法", "如何", "怎么", "技巧"], 1.5),
             (.insight, ["名言", "金句", "观点", "想法", "灵感", "感悟", "思考", "quote"], 1.2),
-            (.product, ["价格", "购买", "商品", "产品", "型号", "参数", "配置", "规格"], 1.5)
+            (.product, ["价格", "购买", "商品", "产品", "型号", "参数", "配置", "规格"], 1.5),
+            (.videoCollection, ["视频", "播放", "观看"], 1.0)
         ]
         
         var scores: [NoteCategory: Double] = [:]
@@ -85,6 +106,9 @@ class CategoryClassifier: CategoryClassifierProtocol {
     
     private func calculateConfidence(for category: NoteCategory, text: String) -> Double {
         let categoryKeywords: [NoteCategory: [String]] = [
+            .videoTutorial: ["教程", "教学", "学习", "课程"],
+            .videoEntertainment: ["搞笑", "娱乐", "有趣"],
+            .videoCollection: ["视频", "播放"],
             .task: ["待办", "todo", "任务", "需要", "记得"],
             .receipt: ["订单", "支付", "金额", "¥", "$", "元"],
             .contact: ["电话", "手机", "微信", "邮箱"],

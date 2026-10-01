@@ -85,7 +85,10 @@ class OCRService {
             amounts: [],
             ids: [],
             contacts: [],
-            links: []
+            links: [],
+            videoAuthor: nil,
+            videoDuration: nil,
+            videoStats: nil
         )
         
         entities.dates = extractDates(from: text)

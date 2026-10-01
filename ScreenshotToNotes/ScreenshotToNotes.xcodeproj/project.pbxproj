@@ -15,6 +15,7 @@
 		AA0012 /* CaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0011 /* CaptureManager.swift */; };
 		AA0014 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0013 /* OCRService.swift */; };
 		AA0016 /* CategoryClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0015 /* CategoryClassifier.swift */; };
+		AA0034 /* VideoScreenshotAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0033 /* VideoScreenshotAnalyzer.swift */; };
 		AA0018 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0017 /* FilterSheetView.swift */; };
 		AA0020 /* NotesWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0019 /* NotesWriter.swift */; };
 		AA0022 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0021 /* HistoryView.swift */; };
@@ -25,6 +26,7 @@
 		AA0032 /* LocalizationStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0031 /* LocalizationStrings.swift */; };
 		AA1001 /* ScreenshotToNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000 /* ScreenshotToNotesTests.swift */; };
 		AA1003 /* CategoryClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1002 /* CategoryClassifierTests.swift */; };
+		AA1015 /* VideoAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1014 /* VideoAnalyzerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,7 @@
 		AA0011 /* CaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureManager.swift; sourceTree = "<group>"; };
 		AA0013 /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		AA0015 /* CategoryClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryClassifier.swift; sourceTree = "<group>"; };
+		AA0033 /* VideoScreenshotAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoScreenshotAnalyzer.swift; sourceTree = "<group>"; };
 		AA0017 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 		AA0019 /* NotesWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesWriter.swift; sourceTree = "<group>"; };
 		AA0021 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		AA1005 /* ScreenshotToNotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenshotToNotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA1000 /* ScreenshotToNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotToNotesTests.swift; sourceTree = "<group>"; };
 		AA1002 /* CategoryClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryClassifierTests.swift; sourceTree = "<group>"; };
+		AA1014 /* VideoAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnalyzerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 			children = (
 				AA0013 /* OCRService.swift */,
 				AA0015 /* CategoryClassifier.swift */,
+				AA0033 /* VideoScreenshotAnalyzer.swift */,
 			);
 			path = Extract;
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 			children = (
 				AA1000 /* ScreenshotToNotesTests.swift */,
 				AA1002 /* CategoryClassifierTests.swift */,
+				AA1014 /* VideoAnalyzerTests.swift */,
 			);
 			path = ScreenshotToNotesTests;
 			sourceTree = "<group>";
@@ -316,6 +322,7 @@
 				AA0028 /* ProcessScreenshotIntent.swift in Sources */,
 				AA0030 /* PhotoKitMonitor.swift in Sources */,
 				AA0032 /* LocalizationStrings.swift in Sources */,
+				AA0034 /* VideoScreenshotAnalyzer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +332,7 @@
 			files = (
 				AA1001 /* ScreenshotToNotesTests.swift in Sources */,
 				AA1003 /* CategoryClassifierTests.swift in Sources */,
+				AA1015 /* VideoAnalyzerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -99,15 +99,50 @@ struct L10n {
         dateFormatter.timeStyle = .short
         dateFormatter.locale = Locale(identifier: "zh_CN")
         
+        let isVideo = content.sourceGuess.isVideoApp
+        
         var body = """
         # \(content.title)
         
         > \(content.summary)
         
+        """
+        
+        if isVideo {
+            if let author = content.entities.videoAuthor {
+                body += "**作者：** @\(author)\n"
+            }
+            body += "**平台：** \(content.sourceGuess.rawValue)\n"
+            if let duration = content.entities.videoDuration {
+                body += "**时长：** \(duration)\n"
+            }
+        }
+        
+        body += """
         **类别：** \(content.category.rawValue)
         **标签：** #截图收藏 #\(content.category.rawValue) \(content.tags.map { "#\($0)" }.joined(separator: " "))
         **截取时间：** \(dateFormatter.string(from: content.screenshotTime))
         **保存时间：** \(dateFormatter.string(from: content.processedTime))
+        
+        """
+        
+        if isVideo, let stats = content.entities.videoStats {
+            body += "\n**数据：**\n"
+            if let likes = stats.likes {
+                body += "- 点赞：\(likes)\n"
+            }
+            if let comments = stats.comments {
+                body += "- 评论：\(comments)\n"
+            }
+            if let shares = stats.shares {
+                body += "- 分享：\(shares)\n"
+            }
+            if let views = stats.views {
+                body += "- 播放：\(views)\n"
+            }
+        }
+        
+        body += """
         
         ---
         

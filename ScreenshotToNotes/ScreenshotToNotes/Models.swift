@@ -9,6 +9,9 @@ enum NoteCategory: String, CaseIterable, Codable {
     case receipt = "单据"
     case contact = "联系人"
     case product = "收藏"
+    case videoCollection = "视频收藏"
+    case videoTutorial = "教程视频"
+    case videoEntertainment = "娱乐视频"
     case inbox = "收件箱"
     case other = "其他"
     
@@ -24,6 +27,9 @@ enum NoteCategory: String, CaseIterable, Codable {
         case .receipt: return "doc.text.fill"
         case .contact: return "person.fill"
         case .product: return "star.fill"
+        case .videoCollection: return "play.rectangle.fill"
+        case .videoTutorial: return "graduationcap.fill"
+        case .videoEntertainment: return "sparkles.tv.fill"
         case .inbox: return "tray.fill"
         case .other: return "folder.fill"
         }
@@ -37,6 +43,9 @@ enum NoteCategory: String, CaseIterable, Codable {
         case .receipt: return .orange
         case .contact: return .purple
         case .product: return .pink
+        case .videoCollection: return .red
+        case .videoTutorial: return .cyan
+        case .videoEntertainment: return .indigo
         case .inbox: return .gray
         case .other: return .gray
         }
@@ -46,12 +55,24 @@ enum NoteCategory: String, CaseIterable, Codable {
 // MARK: - 来源类型
 enum SourceGuess: String, Codable {
     case douyin = "抖音"
+    case kuaishou = "快手"
+    case bilibili = "哔哩哔哩"
+    case xiaohongshu = "小红书"
+    case xigua = "西瓜视频"
     case twitter = "Twitter/X"
     case wechat = "微信公众号"
-    case xiaohongshu = "小红书"
     case chat = "聊天"
     case web = "网页"
     case unknown = "未知"
+    
+    var isVideoApp: Bool {
+        switch self {
+        case .douyin, .kuaishou, .bilibili, .xiaohongshu, .xigua:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 // MARK: - 提取结果
@@ -75,6 +96,16 @@ struct ExtractedContent: Codable, Identifiable {
         var ids: [String]
         var contacts: [String]
         var links: [String]
+        var videoAuthor: String?
+        var videoDuration: String?
+        var videoStats: VideoStats?
+    }
+    
+    struct VideoStats: Codable {
+        var likes: String?
+        var comments: String?
+        var shares: String?
+        var views: String?
     }
     
     init(
